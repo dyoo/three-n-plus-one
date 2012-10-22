@@ -72,7 +72,7 @@ This is certainly not right, but it's a start.  And it's something we can test!
 We want @racketblock[(cycle-length 1) ==> 1]
 
 Let's express this more formally with the @racketmodname[rackunit] unit testing
-library in racket.
+library in Racket.
 
 @interaction[#:eval my-eval
 @code:comment{Load up rackunit:}
@@ -563,8 +563,8 @@ actually read input from standard input.  Let's fix that, and modify
 entry point.
 
 We can read individual lines as strings by iterating across
-@racket[current-output-port] with @racket[in-lines]:
-@racketblock[(for ([line (in-lines (current-output-port))]) ...)]
+@racket[current-input-port] with @racket[in-lines]:
+@racketblock[(for ([line (in-lines (current-input-port))]) ...)]
 
 Once we have a line in hand, we can parse out the individual chunks
 with @racket[read].  @racket[read] doesn't normally read from strings
