@@ -130,9 +130,9 @@ range of numbers, and see how long it takes.
 
 
 @subsection{Introducing an accumulator}
-There are a few things we might do to imrpove the performance of this.  Having
+There are a few things we might do to improve the performance of this.  Having
 the @racket[(add1 ...)] in the definition, waiting until the recursion finishes
-up, seems fine.  I'm curious to see whether writing the definition with an
+up, seems ok, but I'm curious to see whether writing the definition with an
 explicit accumulator will help us.
 
 @interaction[#:eval my-eval
@@ -598,3 +598,10 @@ $ racket three-n-plus-one.rkt < sample-data.txt
 201 210 89
 900 1000 174
 }|}
+
+
+@section{The files}
+@itemlist[
+@item{@link["helpers.rkt"]{helpers.rkt}}
+@item{@link["three-n-plus-one.rkt"]{three-n-plus-one.rkt}}
+]
