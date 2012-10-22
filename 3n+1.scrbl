@@ -1,6 +1,7 @@
 #lang scribble/manual
 
 @(require scribble/eval)
+@(require (for-label racket/base))
 
 @(define my-eval (make-base-eval))
 @(my-eval '(require (for-syntax racket/base)))
