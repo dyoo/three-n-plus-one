@@ -405,8 +405,8 @@ we'll use @racket[for/fold/derived] to express our own @racket[for/max] loop in 
 
 Essentially, as we're looping through numbers, we maintain a
 @racket[current-max], and update that max accordingly as we walk
-across the iteration.  The rest of the code in @racket[for/max]'s
-definition is to delegate the gruntwork to
+across the iteration.  The rest of the code in @racket[for/max]
+delegates the rest of the gruntwork to
 @racket[for/fold] (technically, @racket[for/fold/derived]).
 
 
