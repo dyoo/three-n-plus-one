@@ -114,6 +114,8 @@ statement:
 ]
 
 
+@margin-note{... modulo crazy inputs into the function such as @racket[0].
+If we want to guard against such inputs, we can use the features in @racketmodname[racket/contract].}
 If we run this through our test suite, we should be fairly confident that
 @racket[cycle-length] is probably doing the right thing.
 
