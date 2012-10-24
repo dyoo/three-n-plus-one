@@ -605,6 +605,6 @@ $ racket three-n-plus-one.rkt < sample-data.txt
 
 @section{The files}
 @itemlist[
-@item{@link["helpers.rkt"]{helpers.rkt}}
-@item{@link["three-n-plus-one.rkt"]{three-n-plus-one.rkt}}
+@item{@link["http://hashcollision.org/three-n-plus-one/helpers.rkt"]{helpers.rkt}}
+@item{@link["http://hashcollision.org/three-n-plus-one/three-n-plus-one.rkt"]{three-n-plus-one.rkt}}
 ]
