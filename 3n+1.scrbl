@@ -114,10 +114,12 @@ statement:
 ]
 
 
-@margin-note{... modulo crazy inputs into the function such as @racket[0].
-If we want to guard against such inputs, we can use the features in @racketmodname[racket/contract].}
-If we run this through our test suite, we should be fairly confident that
-@racket[cycle-length] is probably doing the right thing.
+If we run this through our test suite, we should be fairly confident
+that @racket[cycle-length] is probably doing the right thing.
+(... modulo crazy inputs into the function such as @racket[0].  If we
+want to guard against such inputs, we can use the features in
+@racketmodname[racket/contract].)
+
 
 
 
@@ -254,7 +256,6 @@ In terms of Racket, we can say that like this:
          answer]))))]
 
 
-@margin-note{Dave Herman's @link["http://planet.racket-lang.org/display.ss?package=memoize.plt&owner=dherman"]{memoize} package also provides a similar @racket[define/memo], so we may want to use it instead of our own home-baked definition.}
 This defines a small rewrite rule that expresses the idea of memoizing simple,
 1-argument function definitions.  Once we have this @racket[define/memo], we
 can rewrite @racket[cycle-length] to use it:
@@ -379,13 +380,6 @@ directly.
 The question arises: how difficult is it to build @racket[for/max]?
 
 
-@margin-note{The following code follows the example of
-@racket[for/fold/derived].
-
-If you get a error saying that @racket[syntax-case] isn't defined in
-the transformer environment, make sure that Racket's standard
-definitions are available at compile time by doing:
-@racket[(require (for-syntax racket/base))]}
 It turns out that it's not too bad, though it requires a little more macrology:
 we'll use @racket[for/fold/derived] to express our own @racket[for/max] loop in terms of folding:
 
@@ -448,11 +442,7 @@ in terms of @racket[for/max] now:
 @section{Making a module}
 
 
-@margin-note{The modules here, both @filepath{helpers.rkt} and
-@filepath{three-n-plus-one.rkt}, both use a
- @link["http://docs.racket-lang.org/guide/Module_Syntax.html#(part._main-and-test)"]{@racket[test] submodule} to collect the unit tests we've written.  The
-tests don't normally execute, but we can
-@link["http://docs.racket-lang.org/raco/test.html"]{run them with @tt{raco test}}.}
+
 Now that we have most of the solution worked out, let's make a module
 that encapsulates what we've done.  Let's lift up the definitions that
 we used to make the solution nice and pretty, and place them into
