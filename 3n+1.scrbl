@@ -323,7 +323,7 @@ Let's write this in code:
   (apply max
          (for/list ([n (in-range i (add1 j))])
                        @code:comment{(add1 j) for inclusion ...}
-            (cycle-length i))))]
+           (cycle-length i))))]
 
 Let's write a few test cases to make sure that this is computing the right
 thing:
@@ -340,7 +340,7 @@ What?!  Oh, whoops, I wasn't using the @racket[n] in the loop.  Silly me.  Let's
 (define (max-cycle-length-range i j)
   (apply max
          (for/list ([n (in-range i (add1 j))])
-            (cycle-length n))))]
+           (cycle-length n))))]
 
 Thank goodness for test cases.
 
@@ -373,8 +373,8 @@ take the maximum during iteration.
 
 @interaction[#:eval my-eval
 (for/fold ([current-max -inf.0])
-          ([n (in-list '(3 1 4 1 5 9 2 6))])
-   (if (> n current-max) n current-max))]
+          ([n '(3 1 4 1 5 9 2 6)])
+  (if (> n current-max) n current-max))]
 
 There are other versions of @racket[for] loops, such as the one for
 taking sums (@racket[for/sum]).  But as of this writing, there doesn't
@@ -396,11 +396,11 @@ we'll use @racket[for/fold/derived] to express our own @racket[for/max] loop in 
       #'(for/fold/derived original 
                           ([current-max -inf.0])
                           clauses
-           (define maybe-new-max 
-             (let () . defs+exprs))
-           (if (> maybe-new-max current-max)
-               maybe-new-max
-               current-max)))]))
+          (define maybe-new-max 
+            (let () . defs+exprs))
+          (if (> maybe-new-max current-max)
+              maybe-new-max
+              current-max)))]))
 ]
 
 Essentially, as we're looping through numbers, we maintain a
@@ -421,24 +421,24 @@ We must test this, of course:
 
 (check-equal?
  (for/max ([i '(3 1 4 1 5 9 2 6)])
-    i)
+   i)
  9)           
          
 (check-equal?
  (for/max [(i (in-range 1 23))]
-    i)
+   i)
  22)
 
 (check-equal? 
  (for/max ([n '(3.14159 2.71828 1.61803)]
            [s '(-1      1       1)])
-    (* n s))
+   (* n s))
  2.71828)
 
 @code:comment{... and of course...}
 (check-equal? 
  (for/max [(i (in-range 900 (add1 1000)))]
-    (cycle-length i))
+   (cycle-length i))
  174)
 ]
 
@@ -476,11 +476,11 @@ we used to make the solution nice and pretty, and place them into
       #'(for/fold/derived original 
                           ([current-max -inf.0])
                           clauses
-           (define maybe-new-max
-             (let () . defs+exprs))
-           (if (> maybe-new-max current-max)
-               maybe-new-max
-               current-max)))]))
+          (define maybe-new-max
+            (let () . defs+exprs))
+          (if (> maybe-new-max current-max)
+              maybe-new-max
+              current-max)))]))
 
 
 (define-syntax-rule (define/memo (name id) body ...)
@@ -498,19 +498,19 @@ we used to make the solution nice and pretty, and place them into
 (module+ test
   (require rackunit)
   (check-equal? (for/max ([i '()])
-                i)
+                  i)
                 -inf.0)
   (check-equal? (for/max ([i '(3 1 4 1 5 9 2 6)])
-                         i)
+                  i)
                 9)                    
   (check-equal? (for/max [(i (in-range 1 23))]
-                         i)
+                  i)
                 22)
   
   (check-equal? 
-   (for/max ([n (in-list '(3.14159 2.71828 1.61803))]
-             [s (in-list '(-1      1       1))])
-      (* n s))
+   (for/max ([n '(3.14159 2.71828 1.61803)]
+             [s '(-1      1       1)])
+     (* n s))
    2.71828))
 }|
 }
@@ -559,7 +559,7 @@ With our @filepath{helpers.rkt} in in hand, let's put our solution in
    (max-cycle-length-range 900 1000) 174)
   (check-equal?
    (for/max [(i (in-range 900 (add1 1000)))]
-      (cycle-length i))
+     (cycle-length i))
    174))
 }|
 }

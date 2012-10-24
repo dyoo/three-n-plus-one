@@ -3,4 +3,4 @@ doc:
 
 
 blog:
-	raco scriblogify -p the-racket-blog 3n+1.scrbl
+	raco scriblogify -p the-racket-blog -f 3n+1.scrbl
