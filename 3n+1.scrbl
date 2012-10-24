@@ -1,6 +1,7 @@
 #lang scribble/manual
 
 @(require scribble/eval)
+
 @(require (for-label racket/base))
 
 @(define my-eval (make-base-eval))
@@ -8,7 +9,7 @@
 
 
 @title{The 3n+1 problem}
-@author+email["Danny Yoo" "dyoo@hashcollision.org"]
+@author["Danny Yoo"]
 @section{Introduction}
 
 I'm starting to go through
@@ -60,7 +61,8 @@ correct it in a moment, of course!
 
 @interaction[#:eval my-eval
 @code:comment{cycle-length: positive-integer -> positive-integer}
-@code:comment{Computes the cycle length of n, according to the 3n+1 rules.}
+@code:comment{Computes the cycle length of n, according to}
+@code:comment{the 3n+1 rules.}
 (define (cycle-length n)
   42)]
 
@@ -188,13 +190,14 @@ before.
      (hash-ref table n)]
     [else
       @code:comment{If we can't find it, compute it...}
-      (define answer (cond
-                      [(= n 1)
-                       1]
-                      [(odd? n) 
-                       (add1 (cycle-length (add1 (* 3 n))))]
-                      [(even? n)
-                       (add1 (cycle-length (/ n 2)))]))
+      (define answer 
+        (cond
+         [(= n 1)
+          1]
+         [(odd? n) 
+          (add1 (cycle-length (add1 (* 3 n))))]
+         [(even? n)
+          (add1 (cycle-length (/ n 2)))]))
       @code:comment{... and then put it into the table.}
       (hash-set! table n answer)
       @code:comment{Don't forget to return the value back!}
@@ -318,13 +321,15 @@ Let's write this in code:
 @interaction[#:eval my-eval
 (define (max-cycle-length-range i j)
   (apply max
-         (for/list ([n (in-range i (add1 j))])  @code:comment{(add1 j) for inclusion}
+         (for/list ([n (in-range i (add1 j))])
+                       @code:comment{(add1 j) for inclusion ...}
             (cycle-length i))))]
 
 Let's write a few test cases to make sure that this is computing the right
 thing:
 @interaction[#:eval my-eval
-@code:comment{From the "Sample Output" section of http://acm.uva.es/p/v1/100.html}
+@code:comment{From the "Sample Output" section of}
+@code:comment{http://acm.uva.es/p/v1/100.html}
 (check-equal? (max-cycle-length-range 1 10) 20)
 ]
 
@@ -388,8 +393,11 @@ we'll use @racket[for/fold/derived] to express our own @racket[for/max] loop in 
   (syntax-case stx ()
    [(_ clauses . defs+exprs)
     (with-syntax ([original stx])
-      #'(for/fold/derived original ([current-max -inf.0]) clauses
-           (define maybe-new-max (let () . defs+exprs))
+      #'(for/fold/derived original 
+                          ([current-max -inf.0])
+                          clauses
+           (define maybe-new-max 
+             (let () . defs+exprs))
            (if (> maybe-new-max current-max)
                maybe-new-max
                current-max)))]))
@@ -405,26 +413,33 @@ definition is to delegate the gruntwork to
 We must test this, of course:
 
 @interaction[#:eval my-eval
-@code:comment{Edge case: if we take the maximum of no numbers, let's see -inf.0.}
-(check-equal? (for/max ([i (in-list '())])
+@code:comment{Edge case: if we take the maximum of no numbers,}
+@code:comment{let's see -inf.0.}
+(check-equal? (for/max ([i ('()])
                 i)
               -inf.0)
-(check-equal? (for/max ([i (in-list '(3 1 4 1 5 9 2 6))])
-                i)
-              9)                    
-(check-equal? (for/max [(i (in-range 1 23))]
-                i)
-              22)
 
-(check-equal? (for/max ([n (in-list '(3.14159 2.71828 1.61803))]
-                        [s (in-list '(-1      1       1))])
-                (* n s))
-              2.71828)
+(check-equal?
+ (for/max ([i '(3 1 4 1 5 9 2 6)])
+    i)
+ 9)           
+         
+(check-equal?
+ (for/max [(i (in-range 1 23))]
+    i)
+ 22)
+
+(check-equal? 
+ (for/max ([n '(3.14159 2.71828 1.61803)]
+           [s '(-1      1       1)])
+    (* n s))
+ 2.71828)
 
 @code:comment{... and of course...}
-(check-equal? (for/max [(i (in-range 900 (add1 1000)))]
-                (cycle-length i))
-              174)
+(check-equal? 
+ (for/max [(i (in-range 900 (add1 1000)))]
+    (cycle-length i))
+ 174)
 ]
 
 Looks good.  With this, let's express @racket[max-cycle-length-range]
@@ -454,13 +469,15 @@ we used to make the solution nice and pretty, and place them into
 
 (provide for/max define/memo)
 
-
 (define-syntax (for/max stx)
   (syntax-case stx ()
    [(_ clauses . defs+exprs)
     (with-syntax ([original stx])
-      #'(for/fold/derived original ([current-max -inf.0]) clauses
-           (define maybe-new-max (let () . defs+exprs))
+      #'(for/fold/derived original 
+                          ([current-max -inf.0])
+                          clauses
+           (define maybe-new-max
+             (let () . defs+exprs))
            (if (> maybe-new-max current-max)
                maybe-new-max
                current-max)))]))
@@ -478,24 +495,23 @@ we used to make the solution nice and pretty, and place them into
          (hash-set! table id answer)
          answer]))))
 
-
-
 (module+ test
   (require rackunit)
-  (check-equal? (for/max ([i (in-list '())])
+  (check-equal? (for/max ([i '()])
                 i)
                 -inf.0)
-  (check-equal? (for/max ([i (in-list '(3 1 4 1 5 9 2 6))])
+  (check-equal? (for/max ([i '(3 1 4 1 5 9 2 6)])
                          i)
                 9)                    
   (check-equal? (for/max [(i (in-range 1 23))]
                          i)
                 22)
   
-  (check-equal? (for/max ([n (in-list '(3.14159 2.71828 1.61803))]
-                          [s (in-list '(-1      1       1))])
-                         (* n s))
-                2.71828))
+  (check-equal? 
+   (for/max ([n (in-list '(3.14159 2.71828 1.61803))]
+             [s (in-list '(-1      1       1))])
+      (* n s))
+   2.71828))
 }|
 }
 Who knows?  We might reuse @filepath{helpers.rkt} sometime.
@@ -519,11 +535,9 @@ With our @filepath{helpers.rkt} in in hand, let's put our solution in
     [(even? n)
      (add1 (cycle-length (/ n 2)))]))
 
-
 (define (max-cycle-length-range i j)
   (for/max ([n (in-range i (add1 j))])
     (cycle-length n)))
-
 
 
 (module+ test
@@ -535,13 +549,18 @@ With our @filepath{helpers.rkt} in in hand, let's put our solution in
   (check-equal? (cycle-length 5) 6)
   (check-equal? (cycle-length 22) 16)
 
-  (check-equal? (max-cycle-length-range 1 10) 20)
-  (check-equal? (max-cycle-length-range 100 200) 125)
-  (check-equal? (max-cycle-length-range 201 210) 89)
-  (check-equal? (max-cycle-length-range 900 1000) 174)
-  (check-equal? (for/max [(i (in-range 900 (add1 1000)))]
-                         (cycle-length i))
-                174))
+  (check-equal? 
+   (max-cycle-length-range 1 10) 20)
+  (check-equal?
+   (max-cycle-length-range 100 200) 125)
+  (check-equal? 
+   (max-cycle-length-range 201 210) 89)
+  (check-equal?
+   (max-cycle-length-range 900 1000) 174)
+  (check-equal?
+   (for/max [(i (in-range 900 (add1 1000)))]
+      (cycle-length i))
+   174))
 }|
 }
 
@@ -571,8 +590,10 @@ Add the following to the bottom of @filepath{three-n-plus-one.rkt}:
     (define line-port (open-input-string line))
     (define i (read line-port))
     (define j (read line-port))
-    (when (and (number? i)  (number? j))   ;; defensive, just in case 
-      (printf "~a ~a ~a\n" i j (max-cycle-length-range i j)))))
+    (when (and (number? i)  (number? j))
+      (printf "~a ~a ~a\n"
+              i j 
+              (max-cycle-length-range i j)))))
 ]
 
 When we run @filepath{three-n-plus-one.rkt} directly from the command
