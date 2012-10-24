@@ -415,7 +415,7 @@ We must test this, of course:
 @interaction[#:eval my-eval
 @code:comment{Edge case: if we take the maximum of no numbers,}
 @code:comment{let's see -inf.0.}
-(check-equal? (for/max ([i ('()])
+(check-equal? (for/max ([i '()])
                 i)
               -inf.0)
 
