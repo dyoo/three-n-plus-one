@@ -516,6 +516,12 @@ we used to make the solution nice and pretty, and place them into
 }
 Who knows?  We might reuse @filepath{helpers.rkt} sometime.
 
+(You may note that the bottom of @filepath{helpers.rkt} contains a
+@link["http://docs.racket-lang.org/guide/Module_Syntax.html#(part._main-and-test)"]{@racket[test]
+submodule} which collects the unit tests that we've written.  We can
+run a module's test suite by using
+@link["http://docs.racket-lang.org/raco/test.html"]{@tt{raco test}}.)
+
 
 With our @filepath{helpers.rkt} in in hand, let's put our solution in
 @filepath{three-n-plus-one.rkt}:
@@ -582,7 +588,8 @@ with @racket[read].  @racket[read] doesn't normally read from strings
 directly, so we first translate each string into a port-like value
 using @racket[open-input-string].
 
-Add the following to the bottom of @filepath{three-n-plus-one.rkt}:
+Last of all, let's add the following to the bottom of
+@filepath{three-n-plus-one.rkt}:
 
 @racketblock[
 (module+ main
@@ -596,8 +603,9 @@ Add the following to the bottom of @filepath{three-n-plus-one.rkt}:
               (max-cycle-length-range i j)))))
 ]
 
-When we run @filepath{three-n-plus-one.rkt} directly from the command
-line, it wil run @tt{main}:
+This defines a @tt{main} submodule.  When we run
+@filepath{three-n-plus-one.rkt} directly from the command line, it will
+run @tt{main}:
 
 @nested[#:style 'code-inset]{@verbatim|{
 $ cat sample-data.txt
